@@ -1,0 +1,73 @@
+/* Ensure this CSS file is included in your project */
+
+.lead-form-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .lead-form-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .lead-form-field {
+    margin-bottom: 1rem;
+  }
+  
+  .lead-form-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .lead-form-field input,
+  .lead-form-field select,
+  .lead-form-field textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+  }
+  
+  .lead-form-field textarea {
+    resize: vertical;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .submit-button:hover {
+    background-color: #2563eb;
+  }
+  .input-container {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.875rem;
+    position: absolute;
+    bottom: -1.5rem;
+    left: 0;
+  }
+  
+  .error-input {
+    border-color: red;
+  }
+  
+  

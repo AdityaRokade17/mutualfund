@@ -1,0 +1,7 @@
+backend/node_modules
+frontend/admin/node_modules
+frontend/mutualfundform/node_modules
+
+backend/.env
+frontend/admin/.env
+frontend/mutualfundform/.env

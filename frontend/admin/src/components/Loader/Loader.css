@@ -1,0 +1,55 @@
+/* src/components/Loader.css */
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.9); /* Slightly translucent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.stock-loader {
+  width: 150px; /* Adjust width as needed */
+  height: 80px; /* Adjust height as needed */
+  background-color: #f0f0f0; /* Light gray background for the loader container */
+  border-radius: 10px; /* Rounded corners for a modern look */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 10px;
+}
+
+.graph-container {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  width: 100%;
+}
+
+.bar {
+  width: 15%; /* Adjust width for each bar */
+  background-color: #3498db; /* Blue color for bars */
+  margin: 0 2%; /* Margin between bars */
+  border-radius: 2px 2px 0 0; /* Rounded top corners for bars */
+  animation: stock-fluctuation 1.5s ease-in-out infinite; /* Fluctuating animation */
+}
+
+.bar1 { animation-delay: 0s; }
+.bar2 { animation-delay: 0.2s; }
+.bar3 { animation-delay: 0.4s; }
+.bar4 { animation-delay: 0.6s; }
+.bar5 { animation-delay: 0.8s; }
+
+@keyframes stock-fluctuation {
+  0%, 100% { height: 20%; }
+  20% { height: 60%; }
+  40% { height: 40%; }
+  60% { height: 80%; }
+  80% { height: 50%; }
+}
