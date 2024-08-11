@@ -41,6 +41,8 @@ const LeadForm = () => {
     specific_issues: ''
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const requiredFields = [
     'name', 'date_of_birth', 'whatsapp_mobile', 'city', 'country',
     'investment_timeline', 'investment_duration', 'risk_understanding',
@@ -49,6 +51,7 @@ const LeadForm = () => {
     'prefer_rahul_kulkarni', 'is_nri', 'specific_issues'
   ];
 
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -103,6 +106,10 @@ const LeadForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (isSubmitting) {
+      return; // Prevent multiple submissions
+    }
+
     const newErrors = {};
     requiredFields.forEach(field => {
       if (formData[field] === '') {
@@ -122,11 +129,16 @@ const LeadForm = () => {
       return;
     }
 
+    setIsSubmitting(true);
 
-    try {
-      const response = await api.post('/leads/create', formData);
-
-      toast.success('Thank you for your submission! We will get back to you soon.', {
+    toast.promise(
+      api.post('/leads/create', formData),
+      {
+        pending: 'Submitting your information...',
+        success: 'Thank you for your submission! We will get back to you soon.',
+        error: 'Error submitting lead. Please try again.'
+      },
+      {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -135,10 +147,10 @@ const LeadForm = () => {
         draggable: true,
         progress: undefined,
         theme: "colored",
-
-      });
-      
+      }
+    ).then(() => {
       setFormData({
+        // Reset form data here
         name: '',
         date_of_birth: '',
         whatsapp_mobile: '',
@@ -159,10 +171,11 @@ const LeadForm = () => {
         is_nri: '',
         specific_issues: ''
       });
-    } catch (error) {
+    }).catch((error) => {
       console.error('Error submitting lead:', error);
-      alert('Error submitting lead. Please try again.');
-    }
+    }).finally(() => {
+      setIsSubmitting(false);
+    });
   };
 
   return (
@@ -481,9 +494,10 @@ const LeadForm = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+          disabled={isSubmitting}
         >
-          Submit
+          {isSubmitting ? 'Submitting...' : 'Submit'}
         </button>
       </form>
     </div>
