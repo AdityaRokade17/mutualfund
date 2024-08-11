@@ -207,14 +207,15 @@ const LeadForm = () => {
 
         <div className="flex flex-col">
           <label className="font-medium text-gray-700 mb-1">Date Of Birth</label>
-          <input
-            type="date"
-            name="date_of_birth"
-            value={formData.date_of_birth}
-            onChange={handleChange}
-            
-            className={`border ${errors.date_of_birth ? 'border-red-500' : 'border-gray-300'} p-2 rounded-lg focus:outline-none focus:ring-2 ${errors.date_of_birth ? 'focus:ring-red-500' : 'focus:ring-blue-500'}`}          
-          />
+          <div className='date-picker'  >
+            <input
+              type="date"
+              name="date_of_birth"
+              value={formData.date_of_birth}
+              onChange={handleChange}
+              className={`form-control border ${errors.date_of_birth ? 'border-red-500' : 'border-gray-300'} p-2 rounded-lg focus:outline-none focus:ring-2 ${errors.date_of_birth ? 'focus:ring-red-500' : 'focus:ring-blue-500'}`}          
+            />
+          </div>
           {errors.date_of_birth && <p className="text-red-500 text-sm mt-1">{errors.date_of_birth}</p>}
         </div>
 

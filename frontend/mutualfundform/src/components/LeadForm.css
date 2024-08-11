@@ -70,4 +70,8 @@
     border-color: red;
   }
   
-  
+  .form-control{
+    width: 100%;
+    background:none;
+    height: 2.7rem;
+  }
