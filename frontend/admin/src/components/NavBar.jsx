@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import profile from "../assets/profile.png"
+import profile from "../assets/profile3.jpg"
+import profile2 from "../assets/profile.png"
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -53,9 +54,9 @@ const NavBar = () => {
 
     return (
         <div>
-            <nav className='w-full py-3 bg-blue-200'>
+            <nav className='w-full py-3 bg-stone-800'>
                 <div className='w-11/12 flex justify-between items-center mx-auto'>
-                    <h1 className='font-semibold text-3xl'>MutualFund</h1>
+                    <h1 className='font-semibold text-3xl text-white'>MutualFund</h1>
 
                     <div className='flex items-center'>
                         {userRole === 'superadmin' && (
@@ -65,7 +66,7 @@ const NavBar = () => {
                             >
                                 <div className='flex justify-center items-center'>
                                     <button
-                                        className='px-4 py-2 flex items-center font-medium'
+                                        className='px-4 py-2 flex items-center font-medium text-white'
                                         onClick={toggleStaffDropdown}
                                     >
                                         Staff
@@ -80,12 +81,12 @@ const NavBar = () => {
                                     <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded'>
                                         <Link
                                             to="/register-subprofile"
-                                            className='block px-4 py-2 hover:bg-gray-200'
+                                            className='block px-4 py-2 hover:bg-gray-200 rounded-t'
                                         >
                                             Create Staff Profile
                                         </Link>
                                         <Link to="/subprofiles"
-                                            className='block w-full text-left px-4 py-2 hover:bg-gray-200'
+                                            className='block w-full text-left px-4 py-2 hover:bg-gray-200 rounded-b'
                                         >
                                             View Staff
                                         </Link>
@@ -99,9 +100,18 @@ const NavBar = () => {
                             ref={dropdownRef}
                         >
                             <div className='flex justify-center items-center'>
-                                <img className="w-10 h-10 rounded-full bg-cover" src={profile} alt="user photo" />
+                                <div
+                                    className={`p-[2px] rounded-full ${userRole === 'superadmin' ? 'bg-red-500' : 'bg-blue-500'}`}
+                                >
+                                    <img
+                                        className="w-10 h-10 rounded-full bg-cover"
+                                        src={userRole === 'superadmin' ? profile : profile2}
+                                        alt="user photo"
+                                    />
+                                </div>
+
                                 <button
-                                    className='px-4 py-2 flex items-center font-medium'
+                                    className='px-3 py-2 flex items-center font-medium text-white'
                                     onClick={toggleDropdown}
                                 >
                                     {username}
@@ -121,7 +131,7 @@ const NavBar = () => {
                                         Dashboard
                                     </Link>
                                     <button
-                                        className='block w-full text-left px-4 py-2 hover:bg-gray-200'
+                                        className='block w-full text-left px-4 py-2 hover:bg-gray-200 rounded-b'
                                         onClick={handleLogout}
                                     >
                                         Sign Out

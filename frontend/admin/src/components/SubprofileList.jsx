@@ -56,10 +56,12 @@ const SubprofileList = () => {
         username: formData.username,
         password: formData.password
       });
+      toast.success(`${formData.username} updated successfully!`);
       setIsModalOpen(false);
       fetchSubprofiles();
     } catch (error) {
       console.error('Error updating subprofile:', error);
+      toast.error(`Failed to update staff ${formData.username}.`);
       setError('Failed to update Staff');
     }
   };
@@ -92,7 +94,7 @@ const SubprofileList = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <button
                         onClick={() => handleEdit(subprofile)}
-                        className="text-blue-600 hover:text-indigo-900"
+                        className="text-white hover:bg-green-700 bg-green-600 rounded py-1 px-2"
                       >
                         Update
                       </button>
@@ -149,32 +151,6 @@ const SubprofileList = () => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
-              {/* <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="min_investment">
-                  Minimum Investment
-                </label>
-                <input
-                  type="number"
-                  name="min_investment"
-                  id="min_investment"
-                  value={formData.min_investment}
-                  onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="max_investment">
-                  Maximum Investment
-                </label>
-                <input
-                  type="number"
-                  name="max_investment"
-                  id="max_investment"
-                  value={formData.max_investment}
-                  onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div> */}
               {error && <p className="text-red-500 text-xs my-2 italic">{error}</p>}
               <div className="flex items-center justify-between">
                 <button
