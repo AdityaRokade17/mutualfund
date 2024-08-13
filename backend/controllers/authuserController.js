@@ -74,3 +74,51 @@ exports.getSubprofiles = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+exports.updateSubprofile = async (req, res) => {
+  if (req.user.role !== 'superadmin') {
+    return res.status(403).json({ message: 'Only superadmin can update subprofiles' });
+  }
+
+  const { id } = req.params; // Extract id from URL parameters
+  const { username, password } = req.body;
+
+  try {
+    // Check if the subprofile exists
+    const [subprofile] = await pool.query('SELECT * FROM users WHERE id = ? AND role = "subprofile"', [id]);
+    if (subprofile.length === 0) {
+      return res.status(404).json({ message: 'Subprofile not found' });
+    }
+
+    // Prepare the update query
+    let updateQuery = 'UPDATE users SET';
+    const updateParams = [];
+
+    if (username) {
+      updateQuery += ' username = ?,';
+      updateParams.push(username);
+    }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updateQuery += ' password = ?,';
+      updateParams.push(hashedPassword);
+    }
+
+    // Remove the trailing comma and add the WHERE clause
+    updateQuery = updateQuery.slice(0, -1) + ' WHERE id = ? AND role = "subprofile"';
+    updateParams.push(id);
+
+    // Execute the update query
+    await pool.query(updateQuery, updateParams);
+
+    res.json({ message: 'Subprofile updated successfully' });
+  } catch (err) {
+    console.error(err);
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(400).json({ message: 'Username already exists' });
+    }
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+

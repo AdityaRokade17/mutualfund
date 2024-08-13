@@ -6,6 +6,6 @@ const auth = require('../middlewares/auth');
 router.post('/login', userController.login);
 router.post('/create-subprofile', auth, userController.createSubprofile);
 router.get('/subprofiles', auth, userController.getSubprofiles);
-
+router.put('/subprofile/:id', auth, userController.updateSubprofile);
 
 module.exports = router;

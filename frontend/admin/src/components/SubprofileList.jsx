@@ -4,20 +4,65 @@ import NavBar from './NavBar';
 
 const SubprofileList = () => {
   const [subprofiles, setSubprofiles] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingSubprofile, setEditingSubprofile] = useState(null);
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    confirmPassword: '',
+    min_investment: '',
+    max_investment: ''
+  });
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchSubprofiles = async () => {
-      try {
-        const response = await api.get('/auth/subprofiles');
-        setSubprofiles(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error fetching subprofiles:', error);
-      }
-    };
-
     fetchSubprofiles();
   }, []);
+
+  const fetchSubprofiles = async () => {
+    try {
+      const response = await api.get('/auth/subprofiles');
+      setSubprofiles(response.data);
+    } catch (error) {
+      console.error('Error fetching subprofiles:', error);
+    }
+  };
+
+  const handleEdit = (subprofile) => {
+    setEditingSubprofile(subprofile);
+    setFormData({
+      username: subprofile.username,
+      password: '',
+      confirmPassword: ''
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      await api.put(`/auth/subprofile/${editingSubprofile.id}`, {
+        username: formData.username,
+        password: formData.password
+      });
+      setIsModalOpen(false);
+      fetchSubprofiles();
+    } catch (error) {
+      console.error('Error updating subprofile:', error);
+      setError('Failed to update subprofile');
+    }
+  };
 
   return (
     <div>
@@ -34,6 +79,7 @@ const SubprofileList = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Minimum Investment</th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Maximum Investment</th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Active Leads</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -43,6 +89,14 @@ const SubprofileList = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{subprofile.min_investment}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{subprofile.max_investment}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{subprofile.active_leads_count}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <button
+                        onClick={() => handleEdit(subprofile)}
+                        className="text-blue-600 hover:text-indigo-900"
+                      >
+                        Update
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -50,6 +104,97 @@ const SubprofileList = () => {
           </div>
         </div>
       </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">Edit Subprofile</h3>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="confirmPassword">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              {/* <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="min_investment">
+                  Minimum Investment
+                </label>
+                <input
+                  type="number"
+                  name="min_investment"
+                  id="min_investment"
+                  value={formData.min_investment}
+                  onChange={handleInputChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="max_investment">
+                  Maximum Investment
+                </label>
+                <input
+                  type="number"
+                  name="max_investment"
+                  id="max_investment"
+                  value={formData.max_investment}
+                  onChange={handleInputChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div> */}
+              {error && <p className="text-red-500 text-xs my-2 italic">{error}</p>}
+              <div className="flex items-center justify-between">
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Update
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
