@@ -71,7 +71,7 @@ const TestingDashBoard = () => {
         return {
           ...lead,
           currentStatus: statusInfo ? statusInfo.currentStatus : 'new',
-          statuses: statusInfo ? statusInfo.statuses : { contacted: '', interested: '', not_interested: '' }
+          statuses: statusInfo ? statusInfo.statuses : { follow_up_1: '', follow_up_2: '', follow_up_3: '' }
         };
       });
   
@@ -451,9 +451,9 @@ const TestingDashBoard = () => {
                               className='px-2 py-1 border rounded'
                             >
                               <option value="new">New</option>
-                              <option value="contacted">Contacted</option>
-                              <option value="interested">Interested</option>
-                              <option value="not_interested">Not Interested</option>
+                              <option value="follow_up_1">Follow Up 1</option>
+                              <option value="follow_up_2">Follow Up 2</option>
+                              <option value="follow_up_3">Follow Up 3</option>
                             </select>
                           </td>
                           <td className='px-4 py-2 border-b border-gray-100 '>

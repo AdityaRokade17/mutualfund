@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import NavBar from './NavBar';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SubprofileList = () => {
   const [subprofiles, setSubprofiles] = useState([]);
@@ -9,9 +11,7 @@ const SubprofileList = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
-    confirmPassword: '',
-    min_investment: '',
-    max_investment: ''
+    confirmPassword: ''
   });
   const [error, setError] = useState('');
 
@@ -24,7 +24,7 @@ const SubprofileList = () => {
       const response = await api.get('/auth/subprofiles');
       setSubprofiles(response.data);
     } catch (error) {
-      console.error('Error fetching subprofiles:', error);
+      console.error('Error fetching Staff:', error);
     }
   };
 
@@ -60,7 +60,7 @@ const SubprofileList = () => {
       fetchSubprofiles();
     } catch (error) {
       console.error('Error updating subprofile:', error);
-      setError('Failed to update subprofile');
+      setError('Failed to update Staff');
     }
   };
 
@@ -108,7 +108,7 @@ const SubprofileList = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
           <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">Edit Subprofile</h3>
+            <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">Edit Staff</h3>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">

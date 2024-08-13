@@ -46,7 +46,7 @@ exports.getLeads = async (req, res) => {
 
 // Get status names
 exports.getStatusNames = (req, res) => {
-  res.json({ statusNames: ['contacted', 'interested', 'not_interested'] });
+  res.json({ statusNames: ['follow_up_1', 'follow_up_2', 'follow_up_3'] });
 };
 
 // Get current statuses
@@ -55,21 +55,21 @@ exports.getCurrentStatuses = async (req, res) => {
     const [rows] = await pool.query(`
       SELECT l.id AS lead_id, l.name, 
              lsd.current_status,
-             lsd.contacted, lsd.interested, lsd.not_interested
+             lsd.follow_up_1, lsd.follow_up_2, lsd.follow_up_3
       FROM leads l
       LEFT JOIN leadstatusdetails lsd ON l.id = lsd.lead_id
     `);
 
     const leadStatuses = rows.map(row => {
-      const { lead_id, name, current_status, contacted, interested, not_interested } = row;
+      const { lead_id, name, current_status, follow_up_1, follow_up_2, follow_up_3 } = row;
       return {
         lead_id,
         name,
         currentStatus: current_status || 'new',
         statuses: {
-          contacted: contacted || '',
-          interested: interested || '',
-          not_interested: not_interested || ''
+          follow_up_1: follow_up_1 || '',
+          follow_up_2: follow_up_2 || '',
+          follow_up_3: follow_up_3 || ''
         }
       };
     });
@@ -86,7 +86,7 @@ exports.updateLeadStatus = async (req, res) => {
   const { lead_id } = req.params;
   const { status, remark } = req.body;
 
-  if (!['contacted', 'interested', 'not_interested'].includes(status)) {
+  if (!['follow_up_1', 'follow_up_2', 'follow_up_3'].includes(status)) {
     return res.status(400).json({ message: 'Invalid status' });
   }
 
